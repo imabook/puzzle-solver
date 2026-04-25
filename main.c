@@ -104,14 +104,18 @@ bool resolver(char tablero[MAX_X][MAX_Y], pieza_t *piezas, int piezas_len) {
 
 void print_tablero(char tablero[MAX_X][MAX_Y]) {
   printf("\033[H"); // mueve el cursor al principio
-  printf("Tablero\n");
+  printf("Tablero:\n");
 
   printf("+--------+\n");
 
   for (int y = 0; y < MAX_Y; y++) {
     printf("|");
-    for (int x = 0; x < MAX_X; x++)
-      printf("%s", char_to_color(tablero[y][x]));
+    for (int x = 0; x < MAX_X; x++) {
+      char *str = char_to_color(tablero[y][x]);
+      printf("%s", str);
+      free(str);
+    }
+
     printf("|\n");
   }
 
