@@ -43,6 +43,8 @@ int main() {
 bool resolver(char tablero[MAX_X][MAX_Y], pieza_t *piezas, int piezas_len) {
   char tablero_local[MAX_X][MAX_Y];
   pieza_t pieza_local;
+  pieza_t pieza_anterior;
+  bool pieza_set_flag = false;
 
   print_tablero(tablero);
 
@@ -51,51 +53,62 @@ bool resolver(char tablero[MAX_X][MAX_Y], pieza_t *piezas, int piezas_len) {
 
     for (bool flip = false; !flip; flip = true)
       for (int rotation = 0; rotation < 4; rotation++) {
-        memcpy(tablero_local, tablero, sizeof(char) * MAX_X * MAX_Y);
+        if (!pieza_set_flag ||
+            memcmp(pieza_local.estructura, pieza_anterior.estructura,
+                   sizeof(pieza_t)) != 0) {
+          // si es la primera rotacion, o si la anterior estructura es diferente
+          // a la actual
 
-        // printf("poniendo pieza %c\n", pieza_local.representacion);
+          memcpy(tablero_local, tablero, sizeof(char) * MAX_X * MAX_Y);
 
-        if (poner_pieza(tablero_local, pieza_local)) {
-          if (piezas_len == 1) {
-            memcpy(tablero, tablero_local, sizeof(char) * MAX_X * MAX_Y);
+          // printf("poniendo pieza %c\n", pieza_local.representacion);
 
+          if (poner_pieza(tablero_local, pieza_local)) {
+            if (piezas_len == 1) {
+              memcpy(tablero, tablero_local, sizeof(char) * MAX_X * MAX_Y);
+
+              // print_pieza(pieza_local);
+              // ha conseguido poner la ultima pieza
+              return true;
+            }
+
+            // printf("se ha consiguido meter la siguiente pieza:");
             // print_pieza(pieza_local);
-            // ha conseguido poner la ultima pieza
-            return true;
-          }
 
-          // printf("se ha consiguido meter la siguiente pieza:");
-          // print_pieza(pieza_local);
+            pieza_t *piezas_locales =
+                (pieza_t *)malloc(sizeof(pieza_t) * (piezas_len - 1));
 
-          pieza_t *piezas_locales =
-              (pieza_t *)malloc(sizeof(pieza_t) * (piezas_len - 1));
+            for (int j = 0; j < piezas_len; j++) {
+              if (j == i)
+                continue;
 
-          for (int j = 0; j < piezas_len; j++) {
-            if (j == i)
-              continue;
+              piezas_locales[j - ((j > i) ? 1 : 0)] = piezas[j];
+            }
 
-            piezas_locales[j - ((j > i) ? 1 : 0)] = piezas[j];
-          }
+            if (resolver(tablero_local, piezas_locales, piezas_len - 1)) {
+              free(piezas_locales);
 
-          if (resolver(tablero_local, piezas_locales, piezas_len - 1)) {
+              memcpy(tablero, tablero_local, sizeof(char) * MAX_X * MAX_Y);
+              return true;
+            }
+
             free(piezas_locales);
-
-            memcpy(tablero, tablero_local, sizeof(char) * MAX_X * MAX_Y);
-            return true;
           }
 
-          free(piezas_locales);
+          // if (pieza_local.sim_rot)
+          //   break;
+
+          memcpy(&pieza_anterior, &pieza_local, sizeof(pieza_t));
+          pieza_set_flag = true;
+          rotate_pieza(&pieza_local);
         }
-
-        // if (pieza_local.sim_rot)
-        //   break;
-
-        rotate_pieza(&pieza_local);
       }
 
     // if (pieza_local.sim_flip)
     //   break;
 
+    memcpy(&pieza_anterior, &pieza_local, sizeof(pieza_t));
+    pieza_set_flag = true;
     flip_pieza(&pieza_local);
   }
 
