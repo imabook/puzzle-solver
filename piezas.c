@@ -2,189 +2,85 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+
+void _append_I(int starting, pieza_t *PIEZAS);
+void _append_l(int starting, pieza_t *PIEZAS);
+void _append_L(int starting, pieza_t *PIEZAS);
+void _append_S(int starting, pieza_t *PIEZAS);
+void _append_x(int starting, pieza_t *PIEZAS);
+void _append_o(int starting, pieza_t *PIEZAS);
+void _append_p(int starting, pieza_t *PIEZAS);
+void _append_s(int starting, pieza_t *PIEZAS);
+void _append_R(int starting, pieza_t *PIEZAS);
+void _append_P(int starting, pieza_t *PIEZAS);
+void _append_C(int starting, pieza_t *PIEZAS);
+void _append_T(int starting, pieza_t *PIEZAS);
+void _append_W(int starting, pieza_t *PIEZAS);
 
 void gen_piezas(pieza_t *PIEZAS) {
-  // la I
-  memcpy(PIEZAS[0].estructura,
-         (bool[5][5]){{true, false, false, false, false},
-                      {true, false, false, false, false},
-                      {true, false, false, false, false},
-                      {true, false, false, false, false},
-                      {true, false, false, false, false}},
-         sizeof(PIEZAS[0].estructura));
-  PIEZAS[0].size_x = 1;
-  PIEZAS[0].size_y = 5;
-  PIEZAS[0].representacion = 'I';
-  PIEZAS[0].sim_flip = true;
-  PIEZAS[0].sim_rot = false;
+  srand(time(NULL));
+  int in[13] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+  int selection = -1;
 
-  // la L larga
-  memcpy(PIEZAS[1].estructura,
-         (bool[5][5]){{true, true, false, false, false},
-                      {true, false, false, false, false},
-                      {true, false, false, false, false},
-                      {true, false, false, false, false},
-                      {false, false, false, false, false}},
-         sizeof(PIEZAS[1].estructura));
-  PIEZAS[1].size_x = 2;
-  PIEZAS[1].size_y = 4;
-  PIEZAS[1].representacion = 'l';
-  PIEZAS[1].sim_flip = false;
-  PIEZAS[1].sim_rot = false;
+  // bastante feo pero es lo que hay
+  for (int i = 0; i < 13; i++) {
+    bool flag = true;
+    while (flag) {
+      flag = false;
+      selection = rand() % 13;
 
-  // la L corta
-  memcpy(PIEZAS[2].estructura,
-         (bool[5][5]){{true, true, true, false, false},
-                      {true, false, false, false, false},
-                      {true, false, false, false, false},
-                      {false, false, false, false, false},
-                      {false, false, false, false, false}},
-         sizeof(PIEZAS[2].estructura));
-  PIEZAS[2].size_x = 3;
-  PIEZAS[2].size_y = 3;
-  PIEZAS[2].representacion = 'L';
-  PIEZAS[2].sim_flip = true;
-  PIEZAS[2].sim_rot = false;
+      for (int j = 0; j < 13; j++)
+        if (selection == in[j]) {
+          flag = true;
+          break; // el esa pieza ya esta, coge otra
+        }
+    }
 
-  // la S
-  memcpy(PIEZAS[3].estructura,
-         (bool[5][5]){{true, true, false, false, false},
-                      {false, true, false, false, false},
-                      {false, true, true, false, false},
-                      {false, false, false, false, false},
-                      {false, false, false, false, false}},
-         sizeof(PIEZAS[3].estructura));
-  PIEZAS[3].size_x = 3;
-  PIEZAS[3].size_y = 3;
-  PIEZAS[3].representacion = 'S';
-  PIEZAS[3].sim_flip = false;
-  PIEZAS[3].sim_rot = false;
+    in[i] = selection;
 
-  // la cruz
-  memcpy(PIEZAS[4].estructura,
-         (bool[5][5]){{false, true, false, false, false},
-                      {true, true, true, false, false},
-                      {false, true, false, false, false},
-                      {false, false, false, false, false},
-                      {false, false, false, false, false}},
-         sizeof(PIEZAS[4].estructura));
-  PIEZAS[4].size_x = 3;
-  PIEZAS[4].size_y = 3;
-  PIEZAS[4].representacion = 'x';
-  PIEZAS[4].sim_flip = true;
-  PIEZAS[4].sim_rot = true;
-
-  // el cuadrado
-  memcpy(PIEZAS[5].estructura,
-         (bool[5][5]){{true, true, false, false, false},
-                      {true, true, false, false, false},
-                      {false, false, false, false, false},
-                      {false, false, false, false, false},
-                      {false, false, false, false, false}},
-         sizeof(PIEZAS[5].estructura));
-  PIEZAS[5].size_x = 2;
-  PIEZAS[5].size_y = 2;
-  PIEZAS[5].representacion = 'o';
-  PIEZAS[5].sim_flip = true;
-  PIEZAS[5].sim_rot = true;
-
-  // el piton
-  memcpy(PIEZAS[6].estructura,
-         (bool[5][5]){{true, false, false, false, false},
-                      {true, true, false, false, false},
-                      {true, false, false, false, false},
-                      {true, false, false, false, false},
-                      {false, false, false, false, false}},
-         sizeof(PIEZAS[6].estructura));
-  PIEZAS[6].size_x = 2;
-  PIEZAS[6].size_y = 4;
-  PIEZAS[6].representacion = 'p';
-  PIEZAS[6].sim_flip = false;
-  PIEZAS[6].sim_rot = false;
-
-  // la serpiente
-  memcpy(PIEZAS[7].estructura,
-         (bool[5][5]){{true, false, false, false, false},
-                      {true, false, false, false, false},
-                      {true, true, false, false, false},
-                      {false, true, false, false, false},
-                      {false, false, false, false, false}},
-         sizeof(PIEZAS[7].estructura));
-  PIEZAS[7].size_x = 2;
-  PIEZAS[7].size_y = 4;
-  PIEZAS[7].representacion = 's';
-  PIEZAS[7].sim_flip = false;
-  PIEZAS[7].sim_rot = false;
-
-  // el patito
-  memcpy(PIEZAS[8].estructura,
-         (bool[5][5]){{true, true, false, false, false},
-                      {false, true, true, false, false},
-                      {false, true, false, false, false},
-                      {false, false, false, false, false},
-                      {false, false, false, false, false}},
-         sizeof(PIEZAS[8].estructura));
-  PIEZAS[8].size_x = 3;
-  PIEZAS[8].size_y = 3;
-  PIEZAS[8].representacion = 'R';
-  PIEZAS[8].sim_flip = false;
-  PIEZAS[8].sim_rot = false;
-
-  // el gordo teton
-  memcpy(PIEZAS[9].estructura,
-         (bool[5][5]){{true, true, true, false, false},
-                      {true, true, false, false, false},
-                      {false, false, false, false, false},
-                      {false, false, false, false, false},
-                      {false, false, false, false, false}},
-         sizeof(PIEZAS[9].estructura));
-  PIEZAS[9].size_x = 3;
-  PIEZAS[9].size_y = 2;
-  PIEZAS[9].representacion = 'P';
-  PIEZAS[9].sim_flip = false;
-  PIEZAS[9].sim_rot = false;
-
-  // la c
-  memcpy(PIEZAS[10].estructura,
-         (bool[5][5]){{true, true, true, false, false},
-                      {true, false, true, false, false},
-                      {false, false, false, false, false},
-                      {false, false, false, false, false},
-                      {false, false, false, false, false}},
-         sizeof(PIEZAS[10].estructura));
-  PIEZAS[10].size_x = 3;
-  PIEZAS[10].size_y = 2;
-  PIEZAS[10].representacion = 'C';
-  PIEZAS[10].sim_flip = true;
-  PIEZAS[10].sim_rot = false;
-
-  // la T
-  memcpy(PIEZAS[11].estructura,
-         (bool[5][5]){{true, true, true, false, false},
-                      {false, true, false, false, false},
-                      {false, true, false, false, false},
-                      {false, false, false, false, false},
-                      {false, false, false, false, false}},
-         sizeof(PIEZAS[11].estructura));
-  PIEZAS[11].size_x = 3;
-  PIEZAS[11].size_y = 3;
-  PIEZAS[11].representacion = 'T';
-  PIEZAS[11].sim_flip = true;
-  PIEZAS[11].sim_rot = false;
-
-  // la W
-  memcpy(PIEZAS[12].estructura,
-         (bool[5][5]){{true, false, false, false, false},
-                      {true, true, false, false, false},
-                      {false, true, true, false, false},
-                      {false, false, false, false, false},
-                      {false, false, false, false, false}},
-         sizeof(PIEZAS[12].estructura));
-  PIEZAS[12].size_x = 3;
-  PIEZAS[12].size_y = 3;
-  PIEZAS[12].representacion = 'W';
-  PIEZAS[12].sim_flip = true;
-  PIEZAS[12].sim_rot = false;
+    switch (selection) {
+    case 0:
+      _append_I(i, PIEZAS);
+      break;
+    case 1:
+      _append_l(i, PIEZAS);
+      break;
+    case 2:
+      _append_L(i, PIEZAS);
+      break;
+    case 3:
+      _append_S(i, PIEZAS);
+      break;
+    case 4:
+      _append_x(i, PIEZAS);
+      break;
+    case 5:
+      _append_o(i, PIEZAS);
+      break;
+    case 6:
+      _append_p(i, PIEZAS);
+      break;
+    case 7:
+      _append_s(i, PIEZAS);
+      break;
+    case 8:
+      _append_R(i, PIEZAS);
+      break;
+    case 9:
+      _append_P(i, PIEZAS);
+      break;
+    case 10:
+      _append_C(i, PIEZAS);
+      break;
+    case 11:
+      _append_T(i, PIEZAS);
+      break;
+    case 12:
+      _append_W(i, PIEZAS);
+      break;
+    }
+  }
 }
 
 void rotate_pieza(pieza_t *pieza) {
@@ -271,4 +167,224 @@ char *char_to_color(char c) {
   }
 
   return string;
+}
+
+void _append_I(int starting, pieza_t *PIEZAS) {
+  // la I
+  memcpy(PIEZAS[starting].estructura,
+         (bool[5][5]){{true, false, false, false, false},
+                      {true, false, false, false, false},
+                      {true, false, false, false, false},
+                      {true, false, false, false, false},
+                      {true, false, false, false, false}},
+         sizeof(PIEZAS[starting].estructura));
+  PIEZAS[starting].size_x = 1;
+  PIEZAS[starting].size_y = 5;
+  PIEZAS[starting].representacion = 'I';
+  PIEZAS[starting].sim_flip = true;
+  PIEZAS[starting].sim_rot = false;
+}
+
+void _append_l(int starting, pieza_t *PIEZAS) {
+
+  // la L larga
+  memcpy(PIEZAS[starting].estructura,
+         (bool[5][5]){{true, true, false, false, false},
+                      {true, false, false, false, false},
+                      {true, false, false, false, false},
+                      {true, false, false, false, false},
+                      {false, false, false, false, false}},
+         sizeof(PIEZAS[starting].estructura));
+  PIEZAS[starting].size_x = 2;
+  PIEZAS[starting].size_y = 4;
+  PIEZAS[starting].representacion = 'l';
+  PIEZAS[starting].sim_flip = false;
+  PIEZAS[starting].sim_rot = false;
+}
+
+void _append_L(int starting, pieza_t *PIEZAS) {
+
+  // la L corta
+  memcpy(PIEZAS[starting].estructura,
+         (bool[5][5]){{true, true, true, false, false},
+                      {true, false, false, false, false},
+                      {true, false, false, false, false},
+                      {false, false, false, false, false},
+                      {false, false, false, false, false}},
+         sizeof(PIEZAS[starting].estructura));
+  PIEZAS[starting].size_x = 3;
+  PIEZAS[starting].size_y = 3;
+  PIEZAS[starting].representacion = 'L';
+  PIEZAS[starting].sim_flip = true;
+  PIEZAS[starting].sim_rot = false;
+}
+
+void _append_S(int starting, pieza_t *PIEZAS) {
+
+  // la S
+  memcpy(PIEZAS[starting].estructura,
+         (bool[5][5]){{true, true, false, false, false},
+                      {false, true, false, false, false},
+                      {false, true, true, false, false},
+                      {false, false, false, false, false},
+                      {false, false, false, false, false}},
+         sizeof(PIEZAS[starting].estructura));
+  PIEZAS[starting].size_x = 3;
+  PIEZAS[starting].size_y = 3;
+  PIEZAS[starting].representacion = 'S';
+  PIEZAS[starting].sim_flip = false;
+  PIEZAS[starting].sim_rot = false;
+}
+
+void _append_x(int starting, pieza_t *PIEZAS) {
+
+  // la cruz
+  memcpy(PIEZAS[starting].estructura,
+         (bool[5][5]){{false, true, false, false, false},
+                      {true, true, true, false, false},
+                      {false, true, false, false, false},
+                      {false, false, false, false, false},
+                      {false, false, false, false, false}},
+         sizeof(PIEZAS[starting].estructura));
+  PIEZAS[starting].size_x = 3;
+  PIEZAS[starting].size_y = 3;
+  PIEZAS[starting].representacion = 'x';
+  PIEZAS[starting].sim_flip = true;
+  PIEZAS[starting].sim_rot = true;
+}
+
+void _append_o(int starting, pieza_t *PIEZAS) {
+
+  // el cuadrado
+  memcpy(PIEZAS[starting].estructura,
+         (bool[5][5]){{true, true, false, false, false},
+                      {true, true, false, false, false},
+                      {false, false, false, false, false},
+                      {false, false, false, false, false},
+                      {false, false, false, false, false}},
+         sizeof(PIEZAS[starting].estructura));
+  PIEZAS[starting].size_x = 2;
+  PIEZAS[starting].size_y = 2;
+  PIEZAS[starting].representacion = 'o';
+  PIEZAS[starting].sim_flip = true;
+  PIEZAS[starting].sim_rot = true;
+}
+
+void _append_p(int starting, pieza_t *PIEZAS) {
+
+  // el piton
+  memcpy(PIEZAS[starting].estructura,
+         (bool[5][5]){{true, false, false, false, false},
+                      {true, true, false, false, false},
+                      {true, false, false, false, false},
+                      {true, false, false, false, false},
+                      {false, false, false, false, false}},
+         sizeof(PIEZAS[starting].estructura));
+  PIEZAS[starting].size_x = 2;
+  PIEZAS[starting].size_y = 4;
+  PIEZAS[starting].representacion = 'p';
+  PIEZAS[starting].sim_flip = false;
+  PIEZAS[starting].sim_rot = false;
+}
+
+void _append_s(int starting, pieza_t *PIEZAS) {
+
+  // la serpiente
+  memcpy(PIEZAS[starting].estructura,
+         (bool[5][5]){{true, false, false, false, false},
+                      {true, false, false, false, false},
+                      {true, true, false, false, false},
+                      {false, true, false, false, false},
+                      {false, false, false, false, false}},
+         sizeof(PIEZAS[starting].estructura));
+  PIEZAS[starting].size_x = 2;
+  PIEZAS[starting].size_y = 4;
+  PIEZAS[starting].representacion = 's';
+  PIEZAS[starting].sim_flip = false;
+  PIEZAS[starting].sim_rot = false;
+}
+
+void _append_R(int starting, pieza_t *PIEZAS) {
+
+  // el patito
+  memcpy(PIEZAS[starting].estructura,
+         (bool[5][5]){{true, true, false, false, false},
+                      {false, true, true, false, false},
+                      {false, true, false, false, false},
+                      {false, false, false, false, false},
+                      {false, false, false, false, false}},
+         sizeof(PIEZAS[starting].estructura));
+  PIEZAS[starting].size_x = 3;
+  PIEZAS[starting].size_y = 3;
+  PIEZAS[starting].representacion = 'R';
+  PIEZAS[starting].sim_flip = false;
+  PIEZAS[starting].sim_rot = false;
+}
+
+void _append_P(int starting, pieza_t *PIEZAS) {
+
+  // el gordo teton
+  memcpy(PIEZAS[starting].estructura,
+         (bool[5][5]){{true, true, true, false, false},
+                      {true, true, false, false, false},
+                      {false, false, false, false, false},
+                      {false, false, false, false, false},
+                      {false, false, false, false, false}},
+         sizeof(PIEZAS[starting].estructura));
+  PIEZAS[starting].size_x = 3;
+  PIEZAS[starting].size_y = 2;
+  PIEZAS[starting].representacion = 'P';
+  PIEZAS[starting].sim_flip = false;
+  PIEZAS[starting].sim_rot = false;
+}
+
+void _append_C(int starting, pieza_t *PIEZAS) {
+
+  // la c
+  memcpy(PIEZAS[starting].estructura,
+         (bool[5][5]){{true, true, true, false, false},
+                      {true, false, true, false, false},
+                      {false, false, false, false, false},
+                      {false, false, false, false, false},
+                      {false, false, false, false, false}},
+         sizeof(PIEZAS[starting].estructura));
+  PIEZAS[starting].size_x = 3;
+  PIEZAS[starting].size_y = 2;
+  PIEZAS[starting].representacion = 'C';
+  PIEZAS[starting].sim_flip = true;
+  PIEZAS[starting].sim_rot = false;
+}
+
+void _append_T(int starting, pieza_t *PIEZAS) {
+
+  // la T
+  memcpy(PIEZAS[starting].estructura,
+         (bool[5][5]){{true, true, true, false, false},
+                      {false, true, false, false, false},
+                      {false, true, false, false, false},
+                      {false, false, false, false, false},
+                      {false, false, false, false, false}},
+         sizeof(PIEZAS[starting].estructura));
+  PIEZAS[starting].size_x = 3;
+  PIEZAS[starting].size_y = 3;
+  PIEZAS[starting].representacion = 'T';
+  PIEZAS[starting].sim_flip = true;
+  PIEZAS[starting].sim_rot = false;
+}
+
+void _append_W(int starting, pieza_t *PIEZAS) {
+
+  // la W
+  memcpy(PIEZAS[starting].estructura,
+         (bool[5][5]){{true, false, false, false, false},
+                      {true, true, false, false, false},
+                      {false, true, true, false, false},
+                      {false, false, false, false, false},
+                      {false, false, false, false, false}},
+         sizeof(PIEZAS[starting].estructura));
+  PIEZAS[starting].size_x = 3;
+  PIEZAS[starting].size_y = 3;
+  PIEZAS[starting].representacion = 'W';
+  PIEZAS[starting].sim_flip = true;
+  PIEZAS[starting].sim_rot = false;
 }
