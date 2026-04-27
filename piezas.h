@@ -12,7 +12,7 @@ typedef struct {
   bool sim_rot;
 } pieza_t;
 
-void gen_piezas(pieza_t *PIEZAS);
+void gen_piezas(pieza_t *PIEZAS, unsigned int seed);
 void rotate_pieza(pieza_t *pieza);
 void flip_pieza(pieza_t *pieza);
 void print_pieza(pieza_t pieza);

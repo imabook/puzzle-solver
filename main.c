@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define MAX_X 8
 #define MAX_Y 8
@@ -11,15 +12,21 @@ void print_tablero(char tablero[MAX_X][MAX_Y]);
 bool resolver(char tablero[MAX_X][MAX_Y], pieza_t *piezas, int piezas_len);
 bool poner_pieza(char tablero[MAX_X][MAX_Y], pieza_t pieza);
 
-int main() {
+unsigned int SEED;
+
+int main(int argc, char *argv[]) {
   char tablero[MAX_X][MAX_Y];
   pieza_t PIEZAS[13];
+  if (argc == 2)
+    SEED = atoi(argv[1]);
+  else
+    SEED = time(NULL);
 
   for (int y = 0; y < MAX_Y; y++)
     for (int x = 0; x < MAX_X; x++)
       tablero[y][x] = ' ';
 
-  gen_piezas(PIEZAS);
+  gen_piezas(PIEZAS, SEED);
 
   // pieza_t p = PIEZAS[7];
   // for (int j = 0; j < 2; j++) {
@@ -117,7 +124,7 @@ bool resolver(char tablero[MAX_X][MAX_Y], pieza_t *piezas, int piezas_len) {
 
 void print_tablero(char tablero[MAX_X][MAX_Y]) {
   printf("\033[H"); // mueve el cursor al principio
-  printf("Tablero:\n");
+  printf("Tablero con semilla '%d':\n", SEED);
 
   printf("+--------+\n");
 

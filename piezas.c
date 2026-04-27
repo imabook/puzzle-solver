@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 
 void _append_I(int starting, pieza_t *PIEZAS);
 void _append_l(int starting, pieza_t *PIEZAS);
@@ -18,8 +17,8 @@ void _append_C(int starting, pieza_t *PIEZAS);
 void _append_T(int starting, pieza_t *PIEZAS);
 void _append_W(int starting, pieza_t *PIEZAS);
 
-void gen_piezas(pieza_t *PIEZAS) {
-  srand(time(NULL));
+void gen_piezas(pieza_t *PIEZAS, unsigned int seed) {
+  srand(seed);
   int in[13] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
   int selection = -1;
 
